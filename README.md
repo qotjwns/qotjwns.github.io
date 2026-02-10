@@ -1,6 +1,6 @@
 # qotjwns.github.io
+-(https://qotjwns.github.io/)
 
-React + Vite portfolio deployed to GitHub Pages.
 
 ## Local development
 
