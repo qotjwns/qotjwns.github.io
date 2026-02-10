@@ -5,7 +5,7 @@ export default function TopBar({ isDark, onToggleTheme }) {
   return (
     <header className="site-header">
       <div className="site-nav">
-        <a className="brand" href="/about">
+        <a className="brand" href="/">
           {site.name}
         </a>
         <div className="nav-actions">
