@@ -1,5 +1,10 @@
 export const site = {
   name: "Seojun Bae",
+  nav: [
+    { label: "about", type: "section", id: "about", path: "/about" },
+    { label: "project", type: "section", id: "project", path: "/project" },
+    { label: "blog", type: "route", path: "/blog" }
+  ],
   sections: [
     {
       id: "about",
@@ -31,15 +36,6 @@ export const site = {
       ],
     },
     {
-      id: "blog",
-      label: "blog",
-      kind: "list",
-      title: "Blog",
-      description: "Writing about AI, Basic programming, and Paper review",
-      items: [
-      ]
-    },
-    {
       id: "project",
       label: "project",
       kind: "list",
@@ -53,5 +49,10 @@ export const site = {
       ]
     }
   ],
+  blog: {
+    title: "Blog",
+    description: "Writing about AI, Basic programming, and Paper review",
+    emptyMessage: "No posts yet."
+  },
   footer: "© 2026 Seojun Bae"
 };
