@@ -18,7 +18,7 @@ export const site = {
       ],
       
       intro: [
-        "intro"
+        // "introduction"
       ],
       links: [
         // { label: "Email", href: "mailto:hello@example.com" },
