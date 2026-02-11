@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchPosts, getApiBase } from "../lib/notion.js";
+import { fetchPosts } from "../lib/notion.js";
 import { site } from "../content/site.js";
 
 function formatDate(dateString) {
@@ -21,7 +21,7 @@ function formatDate(dateString) {
 export default function BlogPage() {
   const [posts, setPosts] = useState([]);
   const [state, setState] = useState("loading");
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -53,9 +53,6 @@ export default function BlogPage() {
   }, []);
 
   const showEmpty = state === "ready" && posts.length === 0;
-  const apiBase = getApiBase();
-  const isDefaultBase = apiBase === "/api/notion";
-
   return (
     <main className="page blog-page">
       <header className="section-header">
@@ -69,12 +66,6 @@ export default function BlogPage() {
       {state === "error" ? (
         <div className="blog-status">
           <p>Failed to load posts.</p>
-          {isDefaultBase ? (
-            <p className="blog-hint">
-              Set <code>VITE_NOTION_API_BASE</code> to your proxy URL.
-            </p>
-          ) : null}
-          {error?.message ? <p className="blog-hint">{error.message}</p> : null}
         </div>
       ) : null}
       {showEmpty ? <p className="blog-status">{site.blog.emptyMessage}</p> : null}

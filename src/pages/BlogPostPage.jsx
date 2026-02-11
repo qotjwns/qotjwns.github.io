@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NotionRenderer from "../components/NotionRenderer.jsx";
-import { fetchPost, getApiBase } from "../lib/notion.js";
+import { fetchPost } from "../lib/notion.js";
 
 function formatDate(dateString) {
   if (!dateString) {
@@ -52,9 +52,6 @@ export default function BlogPostPage() {
     };
   }, [slug]);
 
-  const apiBase = getApiBase();
-  const isDefaultBase = apiBase === "/api/notion";
-
   if (state === "loading") {
     return (
       <main className="page blog-post">
@@ -64,15 +61,12 @@ export default function BlogPostPage() {
   }
 
   if (state === "error") {
+    const isNotFound = error?.status === 404;
     return (
       <main className="page blog-post">
-        <p className="blog-status">Failed to load this post.</p>
-        {isDefaultBase ? (
-          <p className="blog-hint">
-            Set <code>VITE_NOTION_API_BASE</code> to your proxy URL.
-          </p>
-        ) : null}
-        {error?.message ? <p className="blog-hint">{error.message}</p> : null}
+        <p className="blog-status">
+          {isNotFound ? "Post not found." : "Failed to load this post."}
+        </p>
         <Link className="blog-back" to="/blog">
           Back to blog
         </Link>
