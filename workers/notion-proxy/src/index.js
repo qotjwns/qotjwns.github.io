@@ -6,7 +6,7 @@ const PROPS = {
   published: "Published",
   date: "Date",
   summary: "Summary",
-  tags: "Tags",
+  tags: "tags",
 };
 
 function getPlainText(richText) {
@@ -123,12 +123,28 @@ export default {
     }
 
     if (normalizedPath === "/posts") {
+      const tag = url.searchParams.get("tag");
       try {
+        const filter = tag
+          ? {
+              and: [
+                {
+                  property: PROPS.published,
+                  checkbox: { equals: true },
+                },
+                {
+                  property: PROPS.tags,
+                  multi_select: { contains: tag },
+                },
+              ],
+            }
+          : {
+              property: PROPS.published,
+              checkbox: { equals: true },
+            };
+
         const data = await queryDatabase(env, {
-          filter: {
-            property: PROPS.published,
-            checkbox: { equals: true },
-          },
+          filter,
           sorts: [{ property: PROPS.date, direction: "descending" }],
         });
 

@@ -266,6 +266,35 @@ a {
   gap: 32px;
 }
 
+.blog-tags-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.blog-tag-filter {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: color 0.2s ease, border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.blog-tag-filter:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.blog-tag-filter.active {
+  background: var(--primary-bg);
+  color: var(--primary-text);
+  border-color: var(--primary-bg);
+}
+
 .blog-status {
   color: var(--subtext);
 }

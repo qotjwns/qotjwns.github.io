@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { fetchPosts } from "../lib/notion.js";
 import { site } from "../content/site.js";
 
@@ -19,9 +19,15 @@ function formatDate(dateString) {
 }
 
 export default function BlogPage() {
+  const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [state, setState] = useState("loading");
   const [, setError] = useState(null);
+  const tags = site.blog.tags || [];
+  const activeTag = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("tag") || "";
+  }, [location.search]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -30,7 +36,7 @@ export default function BlogPage() {
   useEffect(() => {
     let active = true;
     setState("loading");
-    fetchPosts()
+    fetchPosts(activeTag)
       .then((data) => {
         if (!active) {
           return;
@@ -50,15 +56,39 @@ export default function BlogPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [activeTag]);
 
   const showEmpty = state === "ready" && posts.length === 0;
+  const tagLinks = [
+    { id: "", label: "All" },
+    ...tags.map((tag) => ({ id: tag.id, label: tag.label })),
+  ];
   return (
     <main className="page blog-page">
       <header className="section-header">
         <h1 className="section-title">{site.blog.title}</h1>
         <p className="section-description">{site.blog.description}</p>
       </header>
+
+      {tagLinks.length > 1 ? (
+        <nav className="blog-tags-bar" aria-label="Blog tags">
+          {tagLinks.map((tag) => {
+            const isActive = tag.id === activeTag;
+            const target = tag.id
+              ? `/blog?tag=${encodeURIComponent(tag.id)}`
+              : "/blog";
+            return (
+              <Link
+                className={`blog-tag-filter${isActive ? " active" : ""}`}
+                key={tag.id || "all"}
+                to={target}
+              >
+                {tag.id ? `#${tag.label}` : tag.label}
+              </Link>
+            );
+          })}
+        </nav>
+      ) : null}
 
       {state === "loading" ? (
         <p className="blog-status">Loading posts...</p>

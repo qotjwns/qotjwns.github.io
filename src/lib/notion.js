@@ -12,8 +12,13 @@ async function requestJson(path) {
   return response.json();
 }
 
-export async function fetchPosts() {
-  return requestJson("/posts");
+export async function fetchPosts(tag) {
+  const params = new URLSearchParams();
+  if (tag) {
+    params.set("tag", tag);
+  }
+  const suffix = params.toString() ? `?${params.toString()}` : "";
+  return requestJson(`/posts${suffix}`);
 }
 
 export async function fetchPost(slug) {

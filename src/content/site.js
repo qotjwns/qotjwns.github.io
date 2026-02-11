@@ -27,6 +27,10 @@ export const site = {
       newsTitle: "news",
       news: [
         {
+          date: "Feb 11, 2026",
+          title: "Blog is open!"
+        },
+        {
           date: "Feb 10, 2026",
           title: "Build this site with React."
         },
@@ -52,7 +56,14 @@ export const site = {
   blog: {
     title: "Blog",
     description: "Writing about AI, Basic programming, and Paper review",
-    emptyMessage: "No posts yet."
+    emptyMessage: "No posts yet.",
+    tags: [
+      { id: "paper", label: "Paper" },
+      { id: "cs", label: "CS" },
+      { id: "ai", label: "AI" },
+      { id: "programming", label: "Programming" },
+      { id: "daily", label: "Daily" }
+    ]
   },
   footer: "© 2026 Seojun Bae"
 };
