@@ -1,3 +1,4 @@
+// 역할: 날짜/제목/설명이 있는 공통 리스트 아이템 UI를 렌더링합니다.
 export default function EntryList({ items }) {
   if (!items || items.length === 0) {
     return null;

@@ -1,3 +1,4 @@
+// 역할: 블로그 글 목록과 태그 필터 UI를 렌더링합니다.
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { fetchPosts } from "../lib/notion.js";

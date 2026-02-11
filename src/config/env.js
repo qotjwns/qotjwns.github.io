@@ -1,3 +1,4 @@
+// 역할: Vite 환경변수를 검증하고 안전한 기본값으로 정규화합니다.
 const DEFAULT_API_BASE = "/api/notion";
 
 function isValidApiBase(value) {

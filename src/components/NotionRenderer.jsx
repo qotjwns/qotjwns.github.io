@@ -1,3 +1,4 @@
+// 역할: Notion 블록 데이터를 화면용 HTML 요소로 변환해 렌더링합니다.
 import { Fragment } from "react";
 
 function applyAnnotations(content, annotations) {

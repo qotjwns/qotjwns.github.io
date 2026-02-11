@@ -1,3 +1,4 @@
+// 역할: 사이트 상단 네비게이션과 테마 토글을 렌더링합니다.
 import { Link } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle.jsx";
 import { site } from "../content/site.js";

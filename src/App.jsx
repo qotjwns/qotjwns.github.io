@@ -1,3 +1,4 @@
+// 역할: 사이트의 최상위 레이아웃과 페이지 라우팅을 구성합니다.
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import AboutSection from "./components/AboutSection.jsx";

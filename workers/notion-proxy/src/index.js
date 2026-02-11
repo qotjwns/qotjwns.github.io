@@ -1,3 +1,4 @@
+// 역할: Notion API를 안전하게 프록시하고 CORS/입력 검증/에러 처리를 담당하는 Worker입니다.
 const NOTION_VERSION = "2022-06-28";
 
 const PROPS = {

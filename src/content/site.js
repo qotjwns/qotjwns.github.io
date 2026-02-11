@@ -1,3 +1,4 @@
+// 역할: 사이트 이름, 네비게이션, 섹션, 블로그 메타 정보를 관리하는 정적 데이터입니다.
 export const site = {
   name: "Seojun Bae",
   nav: [

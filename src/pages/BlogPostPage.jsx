@@ -1,3 +1,4 @@
+// 역할: 단일 블로그 글 상세 페이지를 불러와 렌더링합니다.
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NotionRenderer from "../components/NotionRenderer.jsx";

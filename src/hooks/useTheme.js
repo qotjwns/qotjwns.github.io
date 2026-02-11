@@ -1,3 +1,4 @@
+// 역할: 테마 상태를 localStorage와 동기화하고 토글 기능을 제공합니다.
 import { useEffect, useState } from "react";
 
 const THEME_KEY = "theme";

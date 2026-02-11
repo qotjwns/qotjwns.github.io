@@ -1,3 +1,4 @@
+// 역할: 소개(about) 섹션의 프로필/링크/뉴스/포스트 목록을 렌더링합니다.
 import EntryList from "./EntryList.jsx";
 
 export default function AboutSection({ data, name }) {

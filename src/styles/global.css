@@ -1,3 +1,4 @@
+/* 역할: 사이트 전체의 공통 레이아웃, 타이포그래피, 테마 스타일을 정의합니다. */
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap");
 
 :root {

@@ -1,3 +1,4 @@
+// 역할: 프론트엔드에서 Notion 프록시 API를 호출하는 클라이언트 유틸입니다.
 import { getNotionApiBase } from "../config/env.js";
 
 const API_BASE = getNotionApiBase();

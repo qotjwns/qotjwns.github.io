@@ -1,3 +1,4 @@
+// 역할: 라이트/다크 테마 전환 버튼 UI를 제공합니다.
 export default function ThemeToggle({ isDark, onToggle }) {
   return (
     <button
