@@ -59,6 +59,7 @@ export const site = {
     emptyMessage: "No posts yet.",
     tags: [
       { id: "paper", label: "Paper" },
+      { id: "study", label: "Study" },
       { id: "cs", label: "CS" },
       { id: "ai", label: "AI" },
       { id: "programming", label: "Programming" },
