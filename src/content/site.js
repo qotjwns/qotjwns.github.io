@@ -44,7 +44,7 @@ export const site = {
       label: "project",
       kind: "list",
       title: "Projects",
-      description: "Selected work and experiments.",
+      // description: "Selected work and experiments.",
       items: [
         {
           title: "SpotU",
@@ -55,7 +55,7 @@ export const site = {
   ],
   blog: {
     title: "Blog",
-    description: "Writing about AI, Basic programming, and Paper review",
+    description: "Writing about AI, basic programming, paper reviews, and whatever else I’m curious about.",
     emptyMessage: "No posts yet.",
     tags: [
       { id: "paper", label: "Paper" },
