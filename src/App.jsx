@@ -8,6 +8,7 @@ import { site } from "./content/site.js";
 import useTheme from "./hooks/useTheme.js";
 import BlogPage from "./pages/BlogPage.jsx";
 import BlogPostPage from "./pages/BlogPostPage.jsx";
+import { ROUTES } from "./constants/routes.js";
 
 function HomePage({ forcedSectionId }) {
   const location = useLocation();
@@ -75,14 +76,14 @@ export default function App() {
     <>
       <TopBar isDark={isDark} onToggleTheme={toggleTheme} />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<HomePage forcedSectionId="about" />} />
+        <Route path={ROUTES.home} element={<HomePage />} />
+        <Route path={ROUTES.about} element={<HomePage forcedSectionId="about" />} />
         <Route
-          path="/project"
+          path={ROUTES.project}
           element={<HomePage forcedSectionId="project" />}
         />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path={ROUTES.blog} element={<BlogPage />} />
+        <Route path={`${ROUTES.blog}/:slug`} element={<BlogPostPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

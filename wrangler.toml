@@ -1,3 +1,5 @@
 name = "notion-proxy"
 main = "workers/notion-proxy/src/index.js"
 compatibility_date = "2024-11-01"
+workers_dev = true
+preview_urls = false

@@ -12,7 +12,7 @@ export const site = {
       kind: "about",
 
       roleParts: [
-        "Department of AI, ",
+        "Undergraduate student, Department of AI, ",
         { label: "Chung-Ang University", href: "https://www.cau.ac.kr/" },
         " · Seoul, Republic of Korea",
       ],

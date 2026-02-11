@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NotionRenderer from "../components/NotionRenderer.jsx";
 import { fetchPost } from "../lib/notion.js";
+import { ROUTES } from "../constants/routes.js";
 
 function formatDate(dateString) {
   if (!dateString) {
@@ -67,7 +68,7 @@ export default function BlogPostPage() {
         <p className="blog-status">
           {isNotFound ? "Post not found." : "Failed to load this post."}
         </p>
-        <Link className="blog-back" to="/blog">
+        <Link className="blog-back" to={ROUTES.blog}>
           Back to blog
         </Link>
       </main>
@@ -78,7 +79,7 @@ export default function BlogPostPage() {
     return (
       <main className="page blog-post">
         <p className="blog-status">Post not found.</p>
-        <Link className="blog-back" to="/blog">
+        <Link className="blog-back" to={ROUTES.blog}>
           Back to blog
         </Link>
       </main>
@@ -87,7 +88,7 @@ export default function BlogPostPage() {
 
   return (
     <main className="page blog-post">
-      <Link className="blog-back" to="/blog">
+      <Link className="blog-back" to={ROUTES.blog}>
         Back to blog
       </Link>
       <header className="blog-post-header">

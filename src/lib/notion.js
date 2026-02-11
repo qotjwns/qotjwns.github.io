@@ -1,5 +1,6 @@
-const DEFAULT_API_BASE = "/api/notion";
-const API_BASE = import.meta.env.VITE_NOTION_API_BASE || DEFAULT_API_BASE;
+import { getNotionApiBase } from "../config/env.js";
+
+const API_BASE = getNotionApiBase();
 
 async function requestJson(path) {
   const response = await fetch(`${API_BASE}${path}`);
@@ -9,7 +10,13 @@ async function requestJson(path) {
     error.status = response.status;
     throw error;
   }
-  return response.json();
+  try {
+    return await response.json();
+  } catch {
+    const error = new Error("Invalid JSON response from API");
+    error.status = 502;
+    throw error;
+  }
 }
 
 export async function fetchPosts(tag) {

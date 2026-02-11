@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { fetchPosts } from "../lib/notion.js";
 import { site } from "../content/site.js";
+import { ROUTES } from "../constants/routes.js";
 
 function formatDate(dateString) {
   if (!dateString) {
@@ -75,8 +76,8 @@ export default function BlogPage() {
           {tagLinks.map((tag) => {
             const isActive = tag.id === activeTag;
             const target = tag.id
-              ? `/blog?tag=${encodeURIComponent(tag.id)}`
-              : "/blog";
+              ? `${ROUTES.blog}?tag=${encodeURIComponent(tag.id)}`
+              : ROUTES.blog;
             return (
               <Link
                 className={`blog-tag-filter${isActive ? " active" : ""}`}
@@ -117,7 +118,7 @@ export default function BlogPage() {
                 ) : null}
               </div>
               <div className="blog-body">
-                <Link className="blog-title" to={`/blog/${post.slug}`}>
+                <Link className="blog-title" to={ROUTES.blogPost(post.slug)}>
                   {post.title}
                 </Link>
                 {post.summary ? (
