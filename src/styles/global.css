@@ -547,12 +547,12 @@ a {
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0f1115;
-  --text: #e5e7eb;
-  --subtext: #9ca3af;
-  --muted: #6b7280;
+  --text: #f3f4f6;
+  --subtext: #d1d5db;
+  --muted: #9ca3af;
   --border: #1f2937;
   --shadow: rgba(0, 0, 0, 0.4);
-  --primary-bg: #e5e7eb;
+  --primary-bg: #f3f4f6;
   --primary-text: #0f1115;
   --header-bg: rgba(15, 17, 21, 0.98);
   --toggle-hover: rgba(229, 231, 235, 0.12);
