@@ -1,6 +1,6 @@
 // 역할: 사이트의 최상위 레이아웃과 페이지 라우팅을 구성합니다.
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AboutSection from "./components/AboutSection.jsx";
 import EntryList from "./components/EntryList.jsx";
 import Section from "./components/Section.jsx";
@@ -50,7 +50,6 @@ function HomePage({ forcedSectionId }) {
           </Section>
         );
       })}
-      <footer className="site-footer">{site.footer}</footer>
     </main>
   );
 }
@@ -70,6 +69,21 @@ function NotFoundPage() {
   );
 }
 
+function ProjectDemoPage() {
+  return (
+    <main className="page">
+      <section className="section">
+        <header className="section-header">
+          <h1 className="section-title">Projects</h1>
+          <p className="section-description">
+            Demo page. This section is intentionally left empty for now.
+          </p>
+        </header>
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
   const { isDark, toggleTheme } = useTheme();
 
@@ -77,16 +91,20 @@ export default function App() {
     <>
       <TopBar isDark={isDark} onToggleTheme={toggleTheme} />
       <Routes>
-        <Route path={ROUTES.home} element={<HomePage />} />
-        <Route path={ROUTES.about} element={<HomePage forcedSectionId="about" />} />
+        <Route path={ROUTES.home} element={<HomePage forcedSectionId="about" />} />
+        <Route
+          path={ROUTES.about}
+          element={<Navigate to={ROUTES.home} replace />}
+        />
         <Route
           path={ROUTES.project}
-          element={<HomePage forcedSectionId="project" />}
+          element={<ProjectDemoPage />}
         />
         <Route path={ROUTES.blog} element={<BlogPage />} />
         <Route path={`${ROUTES.blog}/:slug`} element={<BlogPostPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <footer className="site-footer site-footer-global">{site.footer}</footer>
     </>
   );
 }

@@ -92,28 +92,30 @@ export default function BlogPostPage() {
       <Link className="blog-back" to={ROUTES.blog}>
         Back to blog
       </Link>
-      <header className="blog-post-header">
-        <h1 className="blog-post-title">{post.title}</h1>
-        <div className="blog-post-meta">
-          {post.date ? <span>{formatDate(post.date)}</span> : null}
-          {post.tags?.length ? (
-            <div className="blog-tags">
-              {post.tags.map((tag) => (
-                <span className="blog-tag" key={tag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
+      <section className="blog-post-shell">
+        <header className="blog-post-header">
+          <h1 className="blog-post-title">{post.title}</h1>
+          <div className="blog-post-meta">
+            {post.date ? <span>{formatDate(post.date)}</span> : null}
+            {post.tags?.length ? (
+              <div className="blog-tags">
+                {post.tags.map((tag) => (
+                  <span className="blog-tag" key={tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+          {post.summary ? (
+            <p className="blog-post-summary">{post.summary}</p>
           ) : null}
-        </div>
-        {post.summary ? (
-          <p className="blog-post-summary">{post.summary}</p>
-        ) : null}
-      </header>
+        </header>
 
-      <article className="blog-post-content">
-        <NotionRenderer blocks={post.blocks} />
-      </article>
+        <article className="blog-post-content">
+          <NotionRenderer blocks={post.blocks} />
+        </article>
+      </section>
     </main>
   );
 }

@@ -2,7 +2,7 @@
 export const site = {
   name: "Seojun Bae",
   nav: [
-    { label: "about", type: "section", id: "about", path: "/about" },
+    { label: "about", type: "section", id: "about", path: "/" },
     { label: "blog", type: "route", path: "/blog" },
     { label: "project", type: "section", id: "project", path: "/project" }
   ],
