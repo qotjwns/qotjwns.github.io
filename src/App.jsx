@@ -54,33 +54,34 @@ function HomePage({ forcedSectionId }) {
   );
 }
 
-function NotFoundPage() {
+function StaticSectionPage({ title, description }) {
   return (
     <main className="page">
       <section className="section">
         <header className="section-header">
-          <h1 className="section-title">Page not found</h1>
-          <p className="section-description">
-            The page you are looking for does not exist.
-          </p>
+          <h1 className="section-title">{title}</h1>
+          <p className="section-description">{description}</p>
         </header>
       </section>
     </main>
   );
 }
 
+function NotFoundPage() {
+  return (
+    <StaticSectionPage
+      title="Page not found"
+      description="The page you are looking for does not exist."
+    />
+  );
+}
+
 function ProjectDemoPage() {
   return (
-    <main className="page">
-      <section className="section">
-        <header className="section-header">
-          <h1 className="section-title">Projects</h1>
-          <p className="section-description">
-            Demo page. This section is intentionally left empty for now.
-          </p>
-        </header>
-      </section>
-    </main>
+    <StaticSectionPage
+      title="Projects"
+      description="Demo page. This section is intentionally left empty for now."
+    />
   );
 }
 

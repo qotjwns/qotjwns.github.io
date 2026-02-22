@@ -1,63 +1,37 @@
 // 역할: 단일 블로그 글 상세 페이지를 불러와 렌더링합니다.
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NotionRenderer from "../components/NotionRenderer.jsx";
 import { fetchPost } from "../lib/notion.js";
 import { ROUTES } from "../constants/routes.js";
-
-function formatDate(dateString) {
-  if (!dateString) {
-    return "";
-  }
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) {
-    return dateString;
-  }
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-  }).format(date);
-}
+import useAsyncValue from "../hooks/useAsyncValue.js";
+import useScrollTop from "../hooks/useScrollTop.js";
+import PostTags from "../components/PostTags.jsx";
+import StatusMessage from "../components/StatusMessage.jsx";
+import { formatDate } from "../utils/date.js";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [state, setState] = useState("loading");
-  const [error, setError] = useState(null);
+  const { data: post, state, error } = useAsyncValue(
+    async () => {
+      const data = await fetchPost(slug);
+      return data?.post || data;
+    },
+    [slug],
+    null
+  );
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [slug]);
+  useScrollTop([slug]);
 
-  useEffect(() => {
-    let active = true;
-    setState("loading");
-    fetchPost(slug)
-      .then((data) => {
-        if (!active) {
-          return;
-        }
-        setPost(data?.post || data);
-        setState("ready");
-      })
-      .catch((err) => {
-        if (!active) {
-          return;
-        }
-        setError(err);
-        setState("error");
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [slug]);
+  const backLink = (
+    <Link className="blog-back" to={ROUTES.blog}>
+      Back to blog
+    </Link>
+  );
 
   if (state === "loading") {
     return (
       <main className="page blog-post">
-        <p className="blog-status">Loading post...</p>
+        <StatusMessage>Loading post...</StatusMessage>
       </main>
     );
   }
@@ -66,12 +40,10 @@ export default function BlogPostPage() {
     const isNotFound = error?.status === 404;
     return (
       <main className="page blog-post">
-        <p className="blog-status">
+        <StatusMessage>
           {isNotFound ? "Post not found." : "Failed to load this post."}
-        </p>
-        <Link className="blog-back" to={ROUTES.blog}>
-          Back to blog
-        </Link>
+        </StatusMessage>
+        {backLink}
       </main>
     );
   }
@@ -79,33 +51,29 @@ export default function BlogPostPage() {
   if (!post) {
     return (
       <main className="page blog-post">
-        <p className="blog-status">Post not found.</p>
-        <Link className="blog-back" to={ROUTES.blog}>
-          Back to blog
-        </Link>
+        <StatusMessage>Post not found.</StatusMessage>
+        {backLink}
       </main>
     );
   }
 
   return (
     <main className="page blog-post">
-      <Link className="blog-back" to={ROUTES.blog}>
-        Back to blog
-      </Link>
+      {backLink}
       <section className="blog-post-shell">
         <header className="blog-post-header">
           <h1 className="blog-post-title">{post.title}</h1>
           <div className="blog-post-meta">
-            {post.date ? <span>{formatDate(post.date)}</span> : null}
-            {post.tags?.length ? (
-              <div className="blog-tags">
-                {post.tags.map((tag) => (
-                  <span className="blog-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
+            {post.date ? (
+              <span>
+                {formatDate(post.date, {
+                  year: "numeric",
+                  month: "long",
+                  day: "2-digit",
+                })}
+              </span>
             ) : null}
+            <PostTags tags={post.tags} />
           </div>
           {post.summary ? (
             <p className="blog-post-summary">{post.summary}</p>
