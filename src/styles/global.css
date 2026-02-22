@@ -1,9 +1,8 @@
 /* 역할: 사이트 전체의 공통 레이아웃, 타이포그래피, 테마 스타일을 정의합니다. */
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap");
-
 :root {
   color-scheme: light;
-  font-family: "Space Grotesk", "Sora", system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.6;
   font-weight: 400;
 
@@ -11,8 +10,12 @@
   --graphite: #444140;
   --shadow-grey: #1e1e24;
 
-  --font-sans: "Space Grotesk", "Sora", system-ui, -apple-system, sans-serif;
-  --font-display: "Sora", "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-tech: var(--font-sans);
 
   --bg-canvas: var(--seashell);
   --bg-tint-a: rgba(247, 235, 232, 0);
@@ -94,7 +97,7 @@ button:focus-visible {
 .site-nav {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 10px 24px;
+  padding: 9px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -103,10 +106,10 @@ button:focus-visible {
 
 .brand {
   color: var(--header-text);
-  font-family: var(--font-display);
+  font-family: var(--font-tech);
   font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: color var(--theme-transition);
 }
@@ -120,15 +123,16 @@ button:focus-visible {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .nav-link {
   position: relative;
   color: var(--header-text);
+  font-family: var(--font-tech);
   font-size: 0.88rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   opacity: 0.86;
   transition: opacity 0.2s ease, color var(--theme-transition);
 }
@@ -157,9 +161,9 @@ button:focus-visible {
 .page {
   max-width: 1080px;
   margin: 0 auto;
-  padding: clamp(30px, 4vw, 46px) 24px 90px;
+  padding: clamp(26px, 3.6vw, 40px) 24px 68px;
   display: grid;
-  gap: 20px;
+  gap: 18px;
 }
 
 .page > * {
@@ -190,26 +194,27 @@ button:focus-visible {
 
 .about {
   display: grid;
-  gap: 30px;
-  padding: clamp(22px, 3vw, 34px);
+  gap: 24px;
+  padding: clamp(22px, 2.8vw, 32px);
   scroll-margin-top: 98px;
 }
 
 .intro {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .intro-name {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.7vw, 3.4rem);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
 }
 
 .intro-role {
   margin: 0;
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
@@ -240,7 +245,7 @@ button:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .intro-link {
@@ -252,6 +257,7 @@ button:focus-visible {
   border: 1px solid var(--border-strong);
   background: var(--interactive-soft);
   color: var(--text);
+  font-family: var(--font-tech);
   font-size: 0.87rem;
   font-weight: 600;
   transition: background-color 0.2s ease, color 0.2s ease,
@@ -278,7 +284,7 @@ button:focus-visible {
 .subsections {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: 22px;
 }
 
 .subsections.single {
@@ -294,17 +300,17 @@ button:focus-visible {
 .subsection-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
 .section {
   display: grid;
-  gap: 18px;
-  padding: clamp(20px, 2.8vw, 32px);
+  gap: 16px;
+  padding: clamp(20px, 2.6vw, 30px);
   scroll-margin-top: 98px;
 }
 
@@ -336,9 +342,9 @@ button:focus-visible {
 .entry-item {
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
-  gap: 18px;
+  gap: 16px;
   align-items: start;
-  padding: 13px 0;
+  padding: 12px 0;
   border-top: 1px solid var(--border);
 }
 
@@ -356,9 +362,10 @@ button:focus-visible {
 }
 
 .entry-date {
+  font-family: var(--font-tech);
   font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
   white-space: nowrap;
@@ -367,7 +374,24 @@ button:focus-visible {
 
 .entry-body {
   display: grid;
-  gap: 5px;
+  gap: 6px;
+}
+
+/* About 섹션 목록은 날짜 컬럼을 조금 더 타이트하게 잡아 가독성을 높입니다. */
+.subsection .entry-item {
+  grid-template-columns: 106px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.subsection .entry-date {
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+
+.subsection .entry-title {
+  line-height: 1.35;
 }
 
 .entry-title {
@@ -398,6 +422,7 @@ a.entry-title:hover {
 }
 
 .blog-tag-filter {
+  font-family: var(--font-tech);
   font-size: 0.77rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -472,6 +497,7 @@ a.entry-title:hover {
 }
 
 .blog-tag {
+  font-family: var(--font-tech);
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -516,6 +542,7 @@ a.entry-title:hover {
 
 .blog-back {
   width: fit-content;
+  font-family: var(--font-tech);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -598,8 +625,7 @@ a.entry-title:hover {
 }
 
 .blog-post-content code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
   background: var(--interactive-soft);
   padding: 0.14em 0.4em;
   border-radius: var(--radius-card);
@@ -700,10 +726,11 @@ a.entry-title:hover {
 }
 
 .site-footer {
-  margin-top: 6px;
+  margin-top: 2px;
   text-align: center;
+  font-family: var(--font-tech);
   font-size: 0.83rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -750,9 +777,9 @@ a.entry-title:hover {
 }
 
 :root[data-theme="dark"] .blog-tag-filter.active {
-  color: var(--interactive-contrast);
-  background: var(--interactive);
-  border-color: var(--interactive);
+  color: var(--shadow-grey);
+  background: var(--seashell);
+  border-color: var(--seashell);
 }
 
 @keyframes rise-in {
@@ -781,7 +808,7 @@ a.entry-title:hover {
   }
 
   .nav-links {
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
   }
 
@@ -792,7 +819,7 @@ a.entry-title:hover {
 
 @media (max-width: 720px) {
   .page {
-    padding-top: 24px;
+    padding: 24px 20px 56px;
     gap: 16px;
   }
 
