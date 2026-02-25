@@ -398,11 +398,19 @@ button:focus-visible {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-decoration-color 0.22s ease;
+}
+
+a.entry-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1.4px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: transparent;
 }
 
 a.entry-title:hover {
-  color: var(--graphite);
+  color: var(--text);
+  text-decoration-color: currentColor;
 }
 
 .entry-description {
@@ -519,11 +527,16 @@ a.entry-title:hover {
   font-weight: 700;
   line-height: 1.2;
   color: var(--text);
-  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: transparent;
+  transition: color 0.2s ease, text-decoration-color 0.22s ease;
 }
 
 .blog-title:hover {
-  color: var(--graphite);
+  color: var(--text);
+  text-decoration-color: currentColor;
 }
 
 .blog-summary {
