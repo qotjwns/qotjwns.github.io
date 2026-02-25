@@ -1,6 +1,5 @@
 // 역할: Notion API를 안전하게 프록시하고 CORS/입력 검증/에러 처리를 담당하는 Worker입니다.
-const NOTION_VERSION = "2022-06-28";
-
+const NOTION_VERSION = "2025-09-03";
 const PROPS = {
   title: "Title",
   slug: "Slug",
@@ -143,8 +142,23 @@ async function notionFetch(url, env, options = {}) {
   return response.json();
 }
 
-async function queryDatabase(env, body) {
-  const url = `https://api.notion.com/v1/databases/${env.NOTION_DATABASE_ID}/query`;
+async function resolveDataSourceId(env) {
+  if (env.NOTION_DATA_SOURCE_ID) return env.NOTION_DATA_SOURCE_ID;
+
+  if (!env.NOTION_DATABASE_ID) {
+    return null;
+  }
+
+  const dbUrl = `https://api.notion.com/v1/databases/${env.NOTION_DATABASE_ID}`;
+  const db = await notionFetch(dbUrl, env, { method: "GET" });
+
+  const dataSources = Array.isArray(db.data_sources) ? db.data_sources : [];
+  const first = dataSources[0]?.id;
+  return first || null;
+}
+
+async function queryDataSource(env, dataSourceId, body) {
+  const url = `https://api.notion.com/v1/data_sources/${dataSourceId}/query`;
   return notionFetch(url, env, {
     method: "POST",
     body: JSON.stringify(body),
@@ -211,7 +225,7 @@ export default {
       );
     }
 
-    if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
+    if (!env.NOTION_TOKEN || (!env.NOTION_DATA_SOURCE_ID && !env.NOTION_DATABASE_ID)) {
       return jsonResponse(
         { error: "Service misconfigured", requestId },
         { status: 500, corsOrigin }
@@ -228,6 +242,24 @@ export default {
       );
     }
 
+    let dataSourceId;
+    try {
+      dataSourceId = await resolveDataSourceId(env);
+    } catch (error) {
+      logError("resolve-data-source", error, { requestId });
+      return jsonResponse(
+        { error: "Failed to resolve data source", requestId },
+        { status: 500, corsOrigin }
+      );
+    }
+
+    if (!dataSourceId) {
+      return jsonResponse(
+        { error: "Service misconfigured", requestId },
+        { status: 500, corsOrigin }
+      );
+    }
+
     if (normalizedPath === "/posts") {
       const tag = sanitizeTag(url.searchParams.get("tag"));
       if (url.searchParams.get("tag") && !tag) {
@@ -241,22 +273,13 @@ export default {
         const filter = tag
           ? {
               and: [
-                {
-                  property: PROPS.published,
-                  checkbox: { equals: true },
-                },
-                {
-                  property: PROPS.tags,
-                  multi_select: { contains: tag },
-                },
+                { property: PROPS.published, checkbox: { equals: true } },
+                { property: PROPS.tags, multi_select: { contains: tag } },
               ],
             }
-          : {
-              property: PROPS.published,
-              checkbox: { equals: true },
-            };
+          : { property: PROPS.published, checkbox: { equals: true } };
 
-        const data = await queryDatabase(env, {
+        const data = await queryDataSource(env, dataSourceId, {
           filter,
           sorts: [
             { property: PROPS.date, direction: "descending" },
@@ -271,7 +294,8 @@ export default {
           { posts, requestId },
           {
             corsOrigin,
-            cacheControl: "public, max-age=60, s-maxage=300, stale-while-revalidate=300",
+            cacheControl:
+              "public, max-age=60, s-maxage=300, stale-while-revalidate=300",
           }
         );
       } catch (error) {
@@ -304,17 +328,11 @@ export default {
       }
 
       try {
-        const data = await queryDatabase(env, {
+        const data = await queryDataSource(env, dataSourceId, {
           filter: {
             and: [
-              {
-                property: PROPS.slug,
-                rich_text: { equals: slug },
-              },
-              {
-                property: PROPS.published,
-                checkbox: { equals: true },
-              },
+              { property: PROPS.slug, rich_text: { equals: slug } },
+              { property: PROPS.published, checkbox: { equals: true } },
             ],
           },
           sorts: [
@@ -345,7 +363,8 @@ export default {
           { post: { ...post, blocks }, requestId },
           {
             corsOrigin,
-            cacheControl: "public, max-age=60, s-maxage=600, stale-while-revalidate=600",
+            cacheControl:
+              "public, max-age=60, s-maxage=600, stale-while-revalidate=600",
           }
         );
       } catch (error) {

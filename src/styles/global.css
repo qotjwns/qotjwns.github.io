@@ -42,8 +42,17 @@
   --hover-soft-bg: rgba(68, 65, 64, 0.14);
   --hover-soft-border: rgba(68, 65, 64, 0.5);
   --hover-soft-text: var(--text);
-  --hover-strong-bg: rgba(68, 65, 64, 0.22);
-  --hover-strong-border: rgba(68, 65, 64, 0.64);
+  --control-bg: var(--interactive-soft);
+  --control-border: var(--border-strong);
+  --control-text: var(--text);
+  --control-hover-bg: var(--hover-soft-bg);
+  --control-hover-border: var(--hover-soft-border);
+  --control-hover-text: var(--hover-soft-text);
+  --control-active-bg: var(--shadow-grey);
+  --control-active-border: var(--shadow-grey);
+  --control-active-text: var(--interactive-contrast);
+  --control-transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
 
   --focus: var(--graphite);
   --card-shadow: 0 12px 30px rgba(30, 30, 36, 0.14);
@@ -254,14 +263,9 @@ button:focus-visible {
   gap: 6px;
   padding: 8px 14px;
   border-radius: var(--radius-card);
-  border: 1px solid var(--border-strong);
-  background: var(--interactive-soft);
-  color: var(--text);
   font-family: var(--font-tech);
   font-size: 0.87rem;
   font-weight: 600;
-  transition: background-color 0.2s ease, color 0.2s ease,
-    border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .intro-link-icon {
@@ -270,15 +274,23 @@ button:focus-visible {
   flex-shrink: 0;
 }
 
-.intro-link:hover {
-  color: var(--hover-soft-text);
-  background: var(--hover-soft-bg);
-  border-color: var(--hover-soft-border);
+.intro-link,
+.blog-tag-filter,
+.blog-back,
+.theme-toggle {
+  color: var(--control-text);
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  transition: var(--control-transition);
 }
 
-.intro-link-primary:hover {
-  background: var(--hover-strong-bg);
-  border-color: var(--hover-strong-border);
+.intro-link:hover,
+.blog-tag-filter:hover,
+.blog-back:hover,
+.theme-toggle:hover {
+  color: var(--control-hover-text);
+  background: var(--control-hover-bg);
+  border-color: var(--control-hover-border);
 }
 
 .subsections {
@@ -437,23 +449,12 @@ a.entry-title:hover {
   text-transform: uppercase;
   padding: 7px 12px;
   border-radius: var(--radius-card);
-  border: 1px solid var(--border-strong);
-  color: var(--text-muted);
-  background: var(--interactive-soft);
-  transition: color 0.2s ease, background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.blog-tag-filter:hover {
-  color: var(--hover-soft-text);
-  background: var(--hover-soft-bg);
-  border-color: var(--hover-soft-border);
 }
 
 .blog-tag-filter.active {
-  color: var(--interactive-contrast);
-  background: var(--shadow-grey);
-  border-color: var(--shadow-grey);
+  color: var(--control-active-text);
+  background: var(--control-active-bg);
+  border-color: var(--control-active-border);
 }
 
 .blog-status {
@@ -554,22 +555,26 @@ a.entry-title:hover {
 }
 
 .blog-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: fit-content;
   font-family: var(--font-tech);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--header-text);
-  border: 1px solid var(--header-border);
-  background: var(--header-bg);
   border-radius: var(--radius-card);
   padding: 8px 14px;
-  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.blog-back:hover {
-  opacity: 0.88;
+.blog-back-icon {
+  min-width: 40px;
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 .blog-post-header {
@@ -579,12 +584,21 @@ a.entry-title:hover {
   border-bottom: 1px solid var(--border);
 }
 
+.blog-post-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
 .blog-post-title {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
+  min-width: 0;
+  flex: 1;
 }
 
 .blog-post-meta {
@@ -705,20 +719,10 @@ a.entry-title:hover {
   width: 30px;
   height: 30px;
   border-radius: var(--radius-card);
-  border: 1px solid var(--header-border);
-  background: transparent;
-  color: var(--header-text);
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color var(--theme-transition),
-    color var(--theme-transition);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.theme-toggle:hover {
-  background: var(--hover-soft-bg);
-  border-color: var(--hover-soft-border);
 }
 
 .theme-toggle svg {
@@ -782,17 +786,12 @@ a.entry-title:hover {
   --hover-soft-bg: rgba(247, 235, 232, 0.2);
   --hover-soft-border: rgba(247, 235, 232, 0.46);
   --hover-soft-text: var(--text);
-  --hover-strong-bg: rgba(247, 235, 232, 0.28);
-  --hover-strong-border: rgba(247, 235, 232, 0.62);
+  --control-active-bg: var(--seashell);
+  --control-active-border: var(--seashell);
+  --control-active-text: var(--shadow-grey);
 
   --focus: var(--seashell);
   --card-shadow: 0 14px 34px rgba(30, 30, 36, 0.44);
-}
-
-:root[data-theme="dark"] .blog-tag-filter.active {
-  color: var(--shadow-grey);
-  background: var(--seashell);
-  border-color: var(--seashell);
 }
 
 @keyframes rise-in {

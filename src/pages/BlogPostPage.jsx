@@ -23,8 +23,9 @@ export default function BlogPostPage() {
   useScrollTop([slug]);
 
   const backLink = (
-    <Link className="blog-back" to={ROUTES.blog}>
-      Back to blog
+    <Link className="blog-back blog-back-icon" to={ROUTES.blog} aria-label="Back to blog">
+      <span aria-hidden="true">←</span>
+      <span className="sr-only">Back to blog</span>
     </Link>
   );
 
@@ -59,10 +60,12 @@ export default function BlogPostPage() {
 
   return (
     <main className="page blog-post">
-      {backLink}
       <section className="blog-post-shell">
         <header className="blog-post-header">
-          <h1 className="blog-post-title">{post.title}</h1>
+          <div className="blog-post-title-row">
+            <h1 className="blog-post-title">{post.title}</h1>
+            {backLink}
+          </div>
           <div className="blog-post-meta">
             {post.date ? (
               <span>

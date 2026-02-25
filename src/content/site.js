@@ -22,7 +22,7 @@ export const site = {
         // "introduction"
       ],
       links: [
-        // { label: "Email", href: "mailto:hello@example.com" },
+        // { label: "Email", href: "mailto:289qwe64@naver.com" },
         { label: "GitHub", href: "https://github.com/qotjwns" }
       ],
       newsTitle: "news",

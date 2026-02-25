@@ -57,11 +57,7 @@ export default function AboutSection({ data, name }) {
           {data.links.map((link) => {
             const isGitHub = link.label.toLowerCase() === "github";
             return (
-              <a
-                className={`intro-link${isGitHub ? " intro-link-primary" : ""}`}
-                href={link.href}
-                key={link.label}
-              >
+              <a className="intro-link" href={link.href} key={link.label}>
                 {isGitHub ? <GitHubIcon /> : null}
                 {link.label}
               </a>
