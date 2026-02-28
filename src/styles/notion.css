@@ -1,0 +1,51 @@
+/* 역할: Notion 블록 렌더러 전용 스타일을 정의합니다. */
+.notion-code {
+  margin: 0;
+  padding: 14px;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(247, 235, 232, 0.3);
+  background: rgba(30, 30, 36, 0.95);
+  color: var(--seashell);
+  overflow-x: auto;
+}
+
+.notion-code code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.notion-callout {
+  padding: 12px 14px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: var(--interactive-soft);
+}
+
+.notion-image {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.notion-image img {
+  width: 100%;
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 26px rgba(30, 30, 36, 0.2);
+}
+
+.notion-image figcaption {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.notion-list {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.notion-list-item {
+  margin: 0;
+}

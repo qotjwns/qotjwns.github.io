@@ -1,0 +1,19 @@
+/* 역할: 링크/버튼 공통 인터랙션 스타일을 정의합니다. */
+.intro-link,
+.blog-tag-filter,
+.blog-back,
+.theme-toggle {
+  color: var(--control-text);
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  transition: var(--control-transition);
+}
+
+.intro-link:hover,
+.blog-tag-filter:hover,
+.blog-back:hover,
+.theme-toggle:hover {
+  color: var(--control-hover-text);
+  background: var(--control-hover-bg);
+  border-color: var(--control-hover-border);
+}

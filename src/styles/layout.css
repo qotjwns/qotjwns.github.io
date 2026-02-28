@@ -1,0 +1,355 @@
+/* 역할: 사이트 공통 레이아웃과 about/section 영역 스타일을 정의합니다. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  transition: background var(--theme-transition), color var(--theme-transition);
+}
+
+.site-nav {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 9px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.brand {
+  color: var(--header-text);
+  font-family: var(--font-tech);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color var(--theme-transition);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  position: relative;
+  color: var(--header-text);
+  font-family: var(--font-tech);
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.86;
+  transition: opacity 0.2s ease, color var(--theme-transition);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(26px, 3.6vw, 40px) 24px 68px;
+  display: grid;
+  gap: 18px;
+}
+
+.page > * {
+  animation: rise-in 0.38s ease both;
+}
+
+.page > *:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.page > *:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.page > *:nth-child(4) {
+  animation-delay: 0.12s;
+}
+
+.about,
+.section,
+.blog-item,
+.blog-post-shell {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
+  box-shadow: var(--card-shadow);
+}
+
+.about {
+  display: grid;
+  gap: 24px;
+  padding: clamp(22px, 2.8vw, 32px);
+  scroll-margin-top: 98px;
+}
+
+.intro {
+  display: grid;
+  gap: 12px;
+}
+
+.intro-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.7vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.intro-role {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.intro-role-link {
+  color: var(--interactive);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.3px;
+}
+
+.intro-role-link:hover {
+  opacity: 0.84;
+}
+
+.intro-text {
+  display: grid;
+  gap: 10px;
+}
+
+.intro-text p {
+  margin: 0;
+  max-width: 740px;
+  color: var(--text-soft);
+}
+
+.intro-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.intro-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-card);
+  font-family: var(--font-tech);
+  font-size: 0.87rem;
+  font-weight: 600;
+}
+
+.intro-link-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+
+.subsections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.subsections.single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+
+.subsection {
+  display: grid;
+  gap: 10px;
+}
+
+.subsection-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.section {
+  display: grid;
+  gap: 16px;
+  padding: clamp(20px, 2.6vw, 30px);
+  scroll-margin-top: 98px;
+}
+
+.section-header {
+  display: grid;
+  gap: 8px;
+}
+
+.section-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.1;
+}
+
+.section-description {
+  margin: 0;
+  max-width: 700px;
+  color: var(--text-soft);
+}
+
+.entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.entry-item {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.entry-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.entry-item.no-date {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.entry-item.no-date .entry-date {
+  display: none;
+}
+
+.entry-date {
+  font-family: var(--font-tech);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.entry-body {
+  display: grid;
+  gap: 6px;
+}
+
+/* About 섹션 목록은 날짜 컬럼을 조금 더 타이트하게 잡아 가독성을 높입니다. */
+.subsection .entry-item {
+  grid-template-columns: 106px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.subsection .entry-date {
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+
+.subsection .entry-title {
+  line-height: 1.35;
+}
+
+.entry-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: color 0.2s ease, text-decoration-color 0.22s ease;
+}
+
+a.entry-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1.4px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: transparent;
+}
+
+a.entry-title:hover {
+  color: var(--text);
+  text-decoration-color: currentColor;
+}
+
+.entry-description {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.closing {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.theme-toggle {
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.site-footer {
+  margin-top: 2px;
+  text-align: center;
+  font-family: var(--font-tech);
+  font-size: 0.83rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.site-footer-global {
+  max-width: 1080px;
+  margin: 0 auto 16px;
+  padding: 0 24px;
+}

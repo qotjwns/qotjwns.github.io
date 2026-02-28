@@ -1,0 +1,97 @@
+/* 역할: 테마 토큰과 색상 변수를 정의합니다. */
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.6;
+  font-weight: 400;
+
+  --seashell: #f7ebe8;
+  --graphite: #444140;
+  --shadow-grey: #1e1e24;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-tech: var(--font-sans);
+
+  --bg-canvas: var(--seashell);
+  --bg-tint-a: rgba(247, 235, 232, 0);
+  --bg-tint-b: rgba(247, 235, 232, 0);
+
+  --surface: rgba(247, 235, 232, 0.88);
+  --surface-raised: rgba(247, 235, 232, 0.98);
+  --surface-chip: rgba(68, 65, 64, 0.12);
+
+  --text: var(--shadow-grey);
+  --text-soft: rgba(30, 30, 36, 0.8);
+  --text-muted: rgba(68, 65, 64, 0.84);
+
+  --border: rgba(68, 65, 64, 0.18);
+  --border-strong: rgba(68, 65, 64, 0.4);
+
+  --header-bg: var(--bg-canvas);
+  --header-text: var(--shadow-grey);
+  --header-border: var(--border);
+
+  --interactive: var(--graphite);
+  --interactive-contrast: var(--seashell);
+  --interactive-soft: rgba(68, 65, 64, 0.1);
+  --hover-soft-bg: rgba(68, 65, 64, 0.14);
+  --hover-soft-border: rgba(68, 65, 64, 0.5);
+  --hover-soft-text: var(--text);
+  --control-bg: var(--interactive-soft);
+  --control-border: var(--border-strong);
+  --control-text: var(--text);
+  --control-hover-bg: var(--hover-soft-bg);
+  --control-hover-border: var(--hover-soft-border);
+  --control-hover-text: var(--hover-soft-text);
+  --control-active-bg: var(--shadow-grey);
+  --control-active-border: var(--shadow-grey);
+  --control-active-text: var(--interactive-contrast);
+  --control-transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+
+  --focus: var(--graphite);
+  --card-shadow: 0 12px 30px rgba(30, 30, 36, 0.14);
+  --theme-transition: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-card: 18px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-canvas: var(--shadow-grey);
+  --bg-tint-a: rgba(30, 30, 36, 0);
+  --bg-tint-b: rgba(30, 30, 36, 0);
+
+  --surface: rgba(68, 65, 64, 0.74);
+  --surface-raised: rgba(68, 65, 64, 0.9);
+  --surface-chip: rgba(247, 235, 232, 0.14);
+
+  --text: var(--seashell);
+  --text-soft: rgba(247, 235, 232, 0.84);
+  --text-muted: rgba(247, 235, 232, 0.7);
+
+  --border: rgba(247, 235, 232, 0.2);
+  --border-strong: rgba(247, 235, 232, 0.34);
+
+  --header-bg: var(--bg-canvas);
+  --header-text: var(--seashell);
+  --header-border: var(--border);
+
+  --interactive: var(--seashell);
+  --interactive-contrast: var(--shadow-grey);
+  --interactive-soft: rgba(247, 235, 232, 0.14);
+  --hover-soft-bg: rgba(247, 235, 232, 0.2);
+  --hover-soft-border: rgba(247, 235, 232, 0.46);
+  --hover-soft-text: var(--text);
+  --control-active-bg: var(--seashell);
+  --control-active-border: var(--seashell);
+  --control-active-text: var(--shadow-grey);
+
+  --focus: var(--seashell);
+  --card-shadow: 0 14px 34px rgba(30, 30, 36, 0.44);
+}
