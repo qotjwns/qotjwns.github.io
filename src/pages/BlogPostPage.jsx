@@ -9,6 +9,23 @@ import PostTags from "../components/PostTags.jsx";
 import StatusMessage from "../components/StatusMessage.jsx";
 import { formatDate } from "../utils/date.js";
 
+function BlogPostEmptyState({ title, description }) {
+  return (
+    <section className="blog-post-empty-state" aria-live="polite">
+      <div className="blog-post-empty-copy">
+        <p className="blog-post-empty-kicker">Blog</p>
+        <h1 className="blog-post-empty-title">{title}</h1>
+        {description ? (
+          <p className="blog-post-empty-description">{description}</p>
+        ) : null}
+      </div>
+      <Link className="blog-back blog-back-empty" to={ROUTES.blog}>
+        Back to blog
+      </Link>
+    </section>
+  );
+}
+
 export default function BlogPostPage() {
   const { slug } = useParams();
   const { data: post, state, error } = useAsyncValue(
@@ -31,7 +48,7 @@ export default function BlogPostPage() {
 
   if (state === "loading") {
     return (
-      <main className="page blog-post">
+      <main className="page blog-post blog-post-empty-page">
         <StatusMessage>Loading post...</StatusMessage>
       </main>
     );
@@ -40,20 +57,26 @@ export default function BlogPostPage() {
   if (state === "error") {
     const isNotFound = error?.status === 404;
     return (
-      <main className="page blog-post">
-        <StatusMessage>
-          {isNotFound ? "Post not found." : "Failed to load this post."}
-        </StatusMessage>
-        {backLink}
+      <main className="page blog-post blog-post-empty-page">
+        <BlogPostEmptyState
+          title={isNotFound ? "Not Found" : "Unable to load post"}
+          description={
+            isNotFound
+              ? "The post you are looking for does not exist or is no longer available."
+              : "Something went wrong while loading this post."
+          }
+        />
       </main>
     );
   }
 
   if (!post) {
     return (
-      <main className="page blog-post">
-        <StatusMessage>Post not found.</StatusMessage>
-        {backLink}
+      <main className="page blog-post blog-post-empty-page">
+        <BlogPostEmptyState
+          title="Not Found"
+          description="The post you are looking for does not exist or is no longer available."
+        />
       </main>
     );
   }

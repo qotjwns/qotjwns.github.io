@@ -1,6 +1,6 @@
 // 역할: 사이트의 최상위 레이아웃과 페이지 라우팅을 구성합니다.
 import { useEffect } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AboutSection from "./components/AboutSection.jsx";
 import EntryList from "./components/EntryList.jsx";
 import Section from "./components/Section.jsx";
@@ -69,10 +69,20 @@ function StaticSectionPage({ title, description }) {
 
 function NotFoundPage() {
   return (
-    <StaticSectionPage
-      title="Page not found"
-      description="The page you are looking for does not exist."
-    />
+    <main className="page blog-post blog-post-empty-page">
+      <section className="blog-post-empty-state" aria-live="polite">
+        <div className="blog-post-empty-copy">
+          <p className="blog-post-empty-kicker">404</p>
+          <h1 className="blog-post-empty-title">Not Found</h1>
+          <p className="blog-post-empty-description">
+            The page you are looking for does not exist or is no longer available.
+          </p>
+        </div>
+        <Link className="blog-back blog-back-empty" to={ROUTES.home}>
+          Back home
+        </Link>
+      </section>
+    </main>
   );
 }
 
