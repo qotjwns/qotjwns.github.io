@@ -21,6 +21,35 @@
   .subsections {
     grid-template-columns: 1fr;
   }
+
+  .blog-post-toc-rail {
+    position: static;
+    width: auto;
+    left: auto;
+    bottom: auto;
+    margin-top: 24px;
+  }
+
+  .blog-post-toc-rail::before {
+    display: none;
+  }
+
+  .blog-post-toc {
+    position: static;
+    max-height: none;
+    padding: 24px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .blog-post-toc-link {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .blog-post-toc-link::before {
+    display: none;
+  }
 }
 
 @media (max-width: 720px) {

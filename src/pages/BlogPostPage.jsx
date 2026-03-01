@@ -1,8 +1,12 @@
 // 역할: 단일 블로그 글 상세 페이지를 불러와 렌더링합니다.
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import NotionRenderer from "../components/NotionRenderer.jsx";
+import NotionRenderer, {
+  getHeadingsFromBlocks,
+} from "../components/NotionRenderer.jsx";
 import { fetchPost } from "../lib/notion.js";
 import { ROUTES } from "../constants/routes.js";
+import useActiveHeading from "../hooks/useActiveHeading.js";
 import useAsyncValue from "../hooks/useAsyncValue.js";
 import useScrollTop from "../hooks/useScrollTop.js";
 import PostTags from "../components/PostTags.jsx";
@@ -38,6 +42,8 @@ export default function BlogPostPage() {
   );
 
   useScrollTop([slug]);
+  const headings = useMemo(() => getHeadingsFromBlocks(post?.blocks), [post?.blocks]);
+  const activeHeadingId = useActiveHeading(headings);
 
   const backLink = (
     <Link className="blog-back blog-back-icon" to={ROUTES.blog} aria-label="Back to blog">
@@ -83,33 +89,57 @@ export default function BlogPostPage() {
 
   return (
     <main className="page blog-post">
-      <section className="blog-post-shell">
-        <header className="blog-post-header">
-          <div className="blog-post-title-row">
-            <h1 className="blog-post-title">{post.title}</h1>
-            {backLink}
-          </div>
-          <div className="blog-post-meta">
-            {post.date ? (
-              <span>
-                {formatDate(post.date, {
-                  year: "numeric",
-                  month: "long",
-                  day: "2-digit",
-                })}
-              </span>
+      <div className={`blog-post-layout${headings.length ? " has-toc" : ""}`}>
+        <section className="blog-post-shell">
+          <header className="blog-post-header">
+            <div className="blog-post-title-row">
+              <h1 className="blog-post-title">{post.title}</h1>
+              {backLink}
+            </div>
+            <div className="blog-post-meta">
+              {post.date ? (
+                <span>
+                  {formatDate(post.date, {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                  })}
+                </span>
+              ) : null}
+              <PostTags tags={post.tags} />
+            </div>
+            {post.summary ? (
+              <p className="blog-post-summary">{post.summary}</p>
             ) : null}
-            <PostTags tags={post.tags} />
-          </div>
-          {post.summary ? (
-            <p className="blog-post-summary">{post.summary}</p>
-          ) : null}
-        </header>
+          </header>
 
-        <article className="blog-post-content">
-          <NotionRenderer blocks={post.blocks} />
-        </article>
-      </section>
+          <article className="blog-post-content">
+            <NotionRenderer blocks={post.blocks} />
+          </article>
+        </section>
+
+        {headings.length ? (
+          <aside className="blog-post-toc-rail" aria-label="Table of contents">
+            <div className="blog-post-toc">
+              <p className="blog-post-toc-title">Contents</p>
+              <nav className="blog-post-toc-links">
+                {headings.map((heading) => (
+                  <a
+                    aria-current={activeHeadingId === heading.id ? "location" : undefined}
+                    className={`blog-post-toc-link level-${heading.level}${
+                      activeHeadingId === heading.id ? " is-active" : ""
+                    }`}
+                    href={`#${heading.id}`}
+                    key={heading.id}
+                  >
+                    {heading.text}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+        ) : null}
+      </div>
     </main>
   );
 }

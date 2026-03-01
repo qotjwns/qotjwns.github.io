@@ -1,6 +1,12 @@
 // 역할: Notion 블록 데이터를 화면용 HTML 요소로 변환해 렌더링합니다.
 import { Fragment } from "react";
 
+const HEADING_TAGS = {
+  heading_1: "h2",
+  heading_2: "h3",
+  heading_3: "h4",
+};
+
 function applyAnnotations(content, annotations) {
   let node = content;
   if (annotations.code) {
@@ -59,16 +65,63 @@ function getBlockText(block) {
     .join("");
 }
 
-function renderBlock(block) {
+function slugifyHeading(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{Letter}\p{Number}\s-]/gu, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+export function getHeadingsFromBlocks(blocks) {
+  if (!blocks?.length) {
+    return [];
+  }
+
+  const slugCounts = new Map();
+
+  return blocks.flatMap((block, index) => {
+    const tag = HEADING_TAGS[block.type];
+    if (!tag) {
+      return [];
+    }
+
+    const text = getBlockText(block).trim();
+    if (!text) {
+      return [];
+    }
+
+    const baseId = slugifyHeading(text) || `section-${index + 1}`;
+    const count = slugCounts.get(baseId) ?? 0;
+    slugCounts.set(baseId, count + 1);
+
+    return [
+      {
+        blockId: block.id,
+        id: count === 0 ? baseId : `${baseId}-${count + 1}`,
+        level: Number(tag.slice(1)),
+        text,
+      },
+    ];
+  });
+}
+
+function renderBlock(block, headingLookup) {
   switch (block.type) {
     case "paragraph":
       return <p>{renderRichText(block.paragraph.rich_text)}</p>;
     case "heading_1":
-      return <h2>{renderRichText(block.heading_1.rich_text)}</h2>;
     case "heading_2":
-      return <h3>{renderRichText(block.heading_2.rich_text)}</h3>;
-    case "heading_3":
-      return <h4>{renderRichText(block.heading_3.rich_text)}</h4>;
+    case "heading_3": {
+      const HeadingTag = HEADING_TAGS[block.type];
+      const heading = headingLookup.get(block.id);
+      return (
+        <HeadingTag className="notion-heading" id={heading?.id}>
+          {renderRichText(block[block.type].rich_text)}
+        </HeadingTag>
+      );
+    }
     case "quote":
       return <blockquote>{renderRichText(block.quote.rich_text)}</blockquote>;
     case "code":
@@ -144,6 +197,9 @@ export default function NotionRenderer({ blocks }) {
   }
 
   const grouped = groupBlocks(blocks);
+  const headingLookup = new Map(
+    getHeadingsFromBlocks(blocks).map(({ blockId, ...heading }) => [blockId, heading])
+  );
 
   return grouped.map((group, index) => {
     if (group.type === "ul" || group.type === "ol") {
@@ -151,7 +207,7 @@ export default function NotionRenderer({ blocks }) {
       return (
         <ListTag className="notion-list" key={`list-${index}`}>
           {group.items.map((item) => (
-            <Fragment key={item.id}>{renderBlock(item)}</Fragment>
+            <Fragment key={item.id}>{renderBlock(item, headingLookup)}</Fragment>
           ))}
         </ListTag>
       );
@@ -159,7 +215,7 @@ export default function NotionRenderer({ blocks }) {
 
     return (
       <Fragment key={group.id || `block-${index}`}>
-        {renderBlock(group)}
+        {renderBlock(group, headingLookup)}
       </Fragment>
     );
   });
