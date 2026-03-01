@@ -5,7 +5,26 @@
   z-index: 20;
   background: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
-  transition: background var(--theme-transition), color var(--theme-transition);
+  transform: translateY(0);
+  opacity: 1;
+  will-change: transform, opacity;
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.24s ease,
+    background var(--theme-transition),
+    color var(--theme-transition),
+    border-color var(--theme-transition);
+}
+
+.site-header.is-hidden {
+  transform: translateY(calc(-100% - 10px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.site-header.is-visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .site-nav {

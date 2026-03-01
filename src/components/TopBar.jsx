@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle.jsx";
 import { site } from "../content/site.js";
 import { ROUTES } from "../constants/routes.js";
+import useHeaderVisibility from "../hooks/useHeaderVisibility.js";
 
 export default function TopBar({ isDark, onToggleTheme }) {
+  const isVisible = useHeaderVisibility();
+
   return (
-    <header className="site-header">
+    <header className={`site-header ${isVisible ? "is-visible" : "is-hidden"}`}>
       <div className="site-nav">
         <Link className="brand" to={ROUTES.home}>
           {site.name}
