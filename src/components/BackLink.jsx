@@ -7,13 +7,11 @@ export default function BackLink({
   className = "",
 }) {
   const variantClass = variant === "icon" ? "blog-back-icon" : "blog-back-empty";
-  const composedClassName = ["blog-back", variantClass, className]
-    .filter(Boolean)
-    .join(" ");
+  const classes = ["blog-back", variantClass, className].filter(Boolean).join(" ");
 
   if (variant === "icon") {
     return (
-      <Link aria-label={label} className={composedClassName} to={to}>
+      <Link aria-label={label} className={classes} to={to}>
         <span aria-hidden="true">←</span>
         <span className="sr-only">{label}</span>
       </Link>
@@ -21,7 +19,7 @@ export default function BackLink({
   }
 
   return (
-    <Link className={composedClassName} to={to}>
+    <Link className={classes} to={to}>
       {label}
     </Link>
   );

@@ -1,9 +1,4 @@
-export default function EmptyState({
-  kicker,
-  title,
-  description,
-  action,
-}) {
+export default function EmptyState({ kicker, title, description, action }) {
   return (
     <section className="blog-post-empty-state" aria-live="polite">
       <div className="blog-post-empty-copy">

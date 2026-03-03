@@ -1,34 +1,20 @@
 // 역할: 단일 블로그 글 상세 페이지를 불러와 렌더링합니다.
 import { useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import BackLink from "../components/BackLink.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 import NotionRenderer, {
   getHeadingsFromBlocks,
 } from "../components/NotionRenderer.jsx";
 import { fetchPost } from "../lib/notion.js";
 import { ROUTES } from "../constants/routes.js";
+import TableOfContents from "../components/TableOfContents.jsx";
 import useActiveHeading from "../hooks/useActiveHeading.js";
 import useAsyncValue from "../hooks/useAsyncValue.js";
 import useScrollTop from "../hooks/useScrollTop.js";
 import PostTags from "../components/PostTags.jsx";
 import StatusMessage from "../components/StatusMessage.jsx";
 import { formatDate } from "../utils/date.js";
-
-function BlogPostEmptyState({ title, description }) {
-  return (
-    <section className="blog-post-empty-state" aria-live="polite">
-      <div className="blog-post-empty-copy">
-        <p className="blog-post-empty-kicker">Blog</p>
-        <h1 className="blog-post-empty-title">{title}</h1>
-        {description ? (
-          <p className="blog-post-empty-description">{description}</p>
-        ) : null}
-      </div>
-      <Link className="blog-back blog-back-empty" to={ROUTES.blog}>
-        Back to blog
-      </Link>
-    </section>
-  );
-}
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -45,13 +31,6 @@ export default function BlogPostPage() {
   const headings = useMemo(() => getHeadingsFromBlocks(post?.blocks), [post?.blocks]);
   const activeHeadingId = useActiveHeading(headings);
 
-  const backLink = (
-    <Link className="blog-back blog-back-icon" to={ROUTES.blog} aria-label="Back to blog">
-      <span aria-hidden="true">←</span>
-      <span className="sr-only">Back to blog</span>
-    </Link>
-  );
-
   if (state === "loading") {
     return (
       <main className="page blog-post blog-post-empty-page">
@@ -64,13 +43,15 @@ export default function BlogPostPage() {
     const isNotFound = error?.status === 404;
     return (
       <main className="page blog-post blog-post-empty-page">
-        <BlogPostEmptyState
-          title={isNotFound ? "Not Found" : "Unable to load post"}
+        <EmptyState
+          action={<BackLink label="Back to blog" to={ROUTES.blog} />}
           description={
             isNotFound
               ? "The post you are looking for does not exist or is no longer available."
               : "Something went wrong while loading this post."
           }
+          kicker="Blog"
+          title={isNotFound ? "Not Found" : "Unable to load post"}
         />
       </main>
     );
@@ -79,9 +60,11 @@ export default function BlogPostPage() {
   if (!post) {
     return (
       <main className="page blog-post blog-post-empty-page">
-        <BlogPostEmptyState
-          title="Not Found"
+        <EmptyState
+          action={<BackLink label="Back to blog" to={ROUTES.blog} />}
           description="The post you are looking for does not exist or is no longer available."
+          kicker="Blog"
+          title="Not Found"
         />
       </main>
     );
@@ -94,7 +77,7 @@ export default function BlogPostPage() {
           <header className="blog-post-header">
             <div className="blog-post-title-row">
               <h1 className="blog-post-title">{post.title}</h1>
-              {backLink}
+              <BackLink label="Back to blog" to={ROUTES.blog} variant="icon" />
             </div>
             <div className="blog-post-meta">
               {post.date ? (
@@ -118,27 +101,7 @@ export default function BlogPostPage() {
           </article>
         </section>
 
-        {headings.length ? (
-          <aside className="blog-post-toc-rail" aria-label="Table of contents">
-            <div className="blog-post-toc">
-              <p className="blog-post-toc-title">Contents</p>
-              <nav className="blog-post-toc-links">
-                {headings.map((heading) => (
-                  <a
-                    aria-current={activeHeadingId === heading.id ? "location" : undefined}
-                    className={`blog-post-toc-link level-${heading.level}${
-                      activeHeadingId === heading.id ? " is-active" : ""
-                    }`}
-                    href={`#${heading.id}`}
-                    key={heading.id}
-                  >
-                    {heading.text}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
-        ) : null}
+        <TableOfContents activeId={activeHeadingId} headings={headings} />
       </div>
     </main>
   );

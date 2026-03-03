@@ -1,8 +1,4 @@
-export default function PageHeader({
-  title,
-  description,
-  titleAs = "h1",
-}) {
+export default function PageHeader({ title, description, titleAs = "h1" }) {
   const TitleTag = titleAs;
 
   return (

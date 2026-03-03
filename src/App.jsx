@@ -1,8 +1,11 @@
 // 역할: 사이트의 최상위 레이아웃과 페이지 라우팅을 구성합니다.
 import { useEffect } from "react";
-import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AboutSection from "./components/AboutSection.jsx";
+import BackLink from "./components/BackLink.jsx";
+import EmptyState from "./components/EmptyState.jsx";
 import EntryList from "./components/EntryList.jsx";
+import PageHeader from "./components/PageHeader.jsx";
 import Section from "./components/Section.jsx";
 import TopBar from "./components/TopBar.jsx";
 import { site } from "./content/site.js";
@@ -58,10 +61,7 @@ function StaticSectionPage({ title, description }) {
   return (
     <main className="page">
       <section className="section">
-        <header className="section-header">
-          <h1 className="section-title">{title}</h1>
-          <p className="section-description">{description}</p>
-        </header>
+        <PageHeader description={description} title={title} />
       </section>
     </main>
   );
@@ -70,18 +70,12 @@ function StaticSectionPage({ title, description }) {
 function NotFoundPage() {
   return (
     <main className="page blog-post blog-post-empty-page">
-      <section className="blog-post-empty-state" aria-live="polite">
-        <div className="blog-post-empty-copy">
-          <p className="blog-post-empty-kicker">404</p>
-          <h1 className="blog-post-empty-title">Not Found</h1>
-          <p className="blog-post-empty-description">
-            The page you are looking for does not exist or is no longer available.
-          </p>
-        </div>
-        <Link className="blog-back blog-back-empty" to={ROUTES.home}>
-          Back home
-        </Link>
-      </section>
+      <EmptyState
+        action={<BackLink label="Back home" to={ROUTES.home} />}
+        description="The page you are looking for does not exist or is no longer available."
+        kicker="404"
+        title="Not Found"
+      />
     </main>
   );
 }

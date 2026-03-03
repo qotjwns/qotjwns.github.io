@@ -1,6 +1,7 @@
 // 역할: 블로그 글 목록과 태그 필터 UI를 렌더링합니다.
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import PageHeader from "../components/PageHeader.jsx";
 import { fetchPosts } from "../lib/notion.js";
 import { site } from "../content/site.js";
 import { ROUTES } from "../constants/routes.js";
@@ -36,10 +37,7 @@ export default function BlogPage() {
   ];
   return (
     <main className="page blog-page">
-      <header className="section-header">
-        <h1 className="section-title">{site.blog.title}</h1>
-        <p className="section-description">{site.blog.description}</p>
-      </header>
+      <PageHeader description={site.blog.description} title={site.blog.title} />
 
       {tagLinks.length > 1 ? (
         <nav className="blog-tags-bar" aria-label="Blog tags">
