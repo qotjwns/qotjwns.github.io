@@ -1,150 +1,129 @@
 # qotjwns.github.io
 
-React + Vite 기반 개인 포트폴리오/블로그 SPA입니다.  
-블로그 글은 브라우저에서 Notion 토큰을 직접 노출하지 않도록 Cloudflare Worker 프록시를 통해 조회합니다.
+React + Vite 기반 개인 포트폴리오/블로그 SPA입니다.
+블로그는 `Cloudflare Worker`를 통해 Notion API를 프록시하므로 브라우저에서 Notion 토큰이 노출되지 않습니다.
 
 - Live: https://qotjwns.github.io
 
-## 주요 기능
+## 핵심 기능
 
-- 섹션형 포트폴리오 랜딩 페이지(`about`, `project`)
-- 블로그 목록/상세 페이지 라우팅(`/blog`, `/blog/:slug`)
+- 섹션형 랜딩(about, project) 구성
+- `/blog`, `/blog/:slug` 라우팅으로 목록/상세 페이지 제공
 - 태그 기반 글 필터링
 - 라이트/다크 테마 토글
-- Notion API 프록시(입력 검증, CORS, 캐시 헤더, 에러 핸들링)
+- Worker 기반 Notion API 프록시:
+  - 입력 값 검증
+  - CORS 허용 도메인 제어
+  - 에러 처리 및 캐시 헤더
 
 ## 기술 스택
 
 - Frontend: React, React Router, Vite
-- Backend(Proxy): Cloudflare Workers (Wrangler)
+- Proxy: Cloudflare Workers + Wrangler
 - Content Source: Notion Data Source / Database
-- Deploy: GitHub Pages (frontend), Cloudflare Workers (API proxy)
+- Deployment: GitHub Pages(frontend), Cloudflare Workers(api)
 
-## 프로젝트 구조
+## 폴더 구조
 
 ```txt
 .
-├─ src/
-│  ├─ components/         # UI 컴포넌트
-│  ├─ pages/              # BlogPage, BlogPostPage
-│  ├─ lib/notion.js       # 프록시 API 클라이언트
-│  ├─ content/site.js     # 정적 사이트 메타/섹션 데이터
-│  └─ config/env.js       # VITE_NOTION_API_BASE 정규화
-├─ workers/notion-proxy/
-│  └─ src/index.js        # Notion 프록시 Worker
+├─ src/                  # SPA 본문
+│  ├─ components/
+│  ├─ pages/
+│  ├─ lib/notion.js      # 프록시 API 클라이언트
+│  ├─ content/site.js    # 정적 메타/섹션 데이터
+│  └─ config/env.js      # API base 정규화
+├─ workers/notion-proxy/ # Cloudflare Worker 코드
+│  └─ src/index.js
 ├─ .github/workflows/
-│  └─ deploy.yml          # GitHub Pages 배포 워크플로우
+│  └─ deploy.yml
 ├─ wrangler.toml
 └─ vite.config.js
 ```
 
-## 시작하기
+## 로컬 실행
 
-### 1) 의존성 설치
+### 1. 의존성 설치
 
 ```bash
 npm install
 ```
 
-### 2) 프론트엔드 환경변수
+### 2. 프론트엔드 환경 변수
 
-프로젝트 루트에 `.env.local` 파일을 생성합니다.
+로컬 개발 시 Worker 주소를 명시합니다.
 
 ```bash
+# .env.local
 VITE_NOTION_API_BASE=http://localhost:8787
 ```
 
-### 3) Worker 로컬 시크릿
+`VITE_NOTION_API_BASE`를 생략하면 기본값은 `/api/notion`입니다.
 
-프로젝트 루트에 `.dev.vars` 파일을 생성합니다.
+### 3. Worker 환경 변수
+
+루트 경로에 `.dev.vars` 생성:
 
 ```bash
 NOTION_TOKEN=your_notion_token
-# 둘 중 하나는 반드시 필요
+
+# 둘 중 하나는 필수
 NOTION_DATA_SOURCE_ID=your_notion_data_source_id
 # 또는
 NOTION_DATABASE_ID=your_notion_database_id
 
-# 여러 Origin 허용 시 콤마(,)로 구분
+# 다중 허용 도메인: 콤마 구분
 CORS_ORIGIN=http://localhost:5173,https://qotjwns.github.io
 ```
 
-### 4) 개발 서버 실행
-
-터미널 A:
+### 4. 서버 실행
 
 ```bash
-npm run dev
+npm run dev          # 프론트엔드 (5173)
+npm run worker:dev   # Worker (8787)
 ```
 
-터미널 B:
+## API 엔드포인트
+
+- `GET /api/notion/health`, `GET /health`
+- `GET /api/notion/posts?tag=<tag>`
+- `GET /api/notion/posts/:slug`
+
+## 배포
+
+### Worker 배포
 
 ```bash
-npm run worker:dev
+npx wrangler login
+npx wrangler secret put NOTION_TOKEN
+npx wrangler secret put NOTION_DATA_SOURCE_ID  # 또는 NOTION_DATABASE_ID
+npx wrangler secret put CORS_ORIGIN
+npm run worker:deploy
 ```
 
-기본 주소:
-
-- Frontend: `http://localhost:5173`
-- Worker: `http://localhost:8787`
-
-## npm 스크립트
+### Frontend 배포
 
 ```bash
-npm run dev           # Vite 개발 서버
-npm run build         # 프로덕션 빌드
-npm run preview       # 빌드 결과 로컬 확인
-npm run worker:dev    # Cloudflare Worker 로컬 실행
-npm run worker:deploy # Cloudflare Worker 배포
+# .env.production
+VITE_NOTION_API_BASE=https://<your-worker>.workers.dev
 ```
 
-## Notion 데이터 스키마
+`main` 브랜치 푸시 시 `.github/workflows/deploy.yml`이 실행되어 GitHub Pages에 배포됩니다.
 
-Worker는 아래 속성명을 기준으로 글을 매핑합니다.
+## Notion 페이지 스키마
+
+Worker가 매핑에 사용하는 속성은 아래와 같습니다.
 
 - `Title` (title)
-- `Slug` (rich_text, slug 용도)
+- `Slug` (rich_text)
 - `Published` (checkbox)
 - `Date` (date)
 - `Summary` (rich_text)
 - `tags` (multi_select)
 
-속성명이 다르면 블로그 목록/상세 조회가 실패하거나 빈 값으로 표시될 수 있습니다.
+속성명이 다르면 목록/상세 데이터가 비어 보일 수 있습니다.
 
-## API 엔드포인트 (Worker)
+## 보안 가이드
 
-- `GET /api/notion/health` 또는 `GET /health`
-- `GET /api/notion/posts?tag=<tag>`
-- `GET /api/notion/posts/:slug`
-
-`VITE_NOTION_API_BASE`를 설정하지 않으면 프론트엔드는 기본값 `/api/notion`을 사용합니다.
-
-## 배포
-
-### 1) Worker 배포
-
-```bash
-npx wrangler login
-npx wrangler secret put NOTION_TOKEN
-npx wrangler secret put NOTION_DATA_SOURCE_ID
-# 또는 NOTION_DATABASE_ID
-npx wrangler secret put CORS_ORIGIN
-npm run worker:deploy
-```
-
-### 2) 프론트엔드 API 주소 설정
-
-프로젝트 루트에 `.env.production` 파일을 생성/수정합니다.
-
-```bash
-VITE_NOTION_API_BASE=https://<your-worker>.workers.dev
-```
-
-### 3) GitHub Pages 배포
-
-`main` 브랜치에 push하면 `.github/workflows/deploy.yml`이 실행되어 `dist`가 GitHub Pages에 배포됩니다.
-
-## 보안 주의사항
-
-- `.dev.vars`에는 실제 Notion 토큰이 들어가므로 절대 커밋하지 마세요.
-- `CORS_ORIGIN`은 필요한 도메인만 허용하도록 최소화하세요.
+- `.dev.vars` 및 `.env*`에 실제 `NOTION_TOKEN`을 직접 커밋하지 마세요.
+- `CORS_ORIGIN`은 실제 사용 도메인만 허용하도록 최소화하세요.
