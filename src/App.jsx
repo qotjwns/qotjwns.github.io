@@ -96,7 +96,7 @@ export default function App() {
     <>
       <TopBar isDark={isDark} onToggleTheme={toggleTheme} />
       <Routes>
-        <Route path={ROUTES.home} element={<HomePage forcedSectionId="about" />} />
+        <Route path={ROUTES.home} element={<HomePage />} />
         <Route
           path={ROUTES.about}
           element={<Navigate to={ROUTES.home} replace />}
